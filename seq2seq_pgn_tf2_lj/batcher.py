@@ -161,9 +161,12 @@ def example_generator(params, vocab, max_enc_len, max_dec_len, mode, batch_size)
             if params['pointer_gen']:
                 abs_ids_extend_vocab = abstract_to_ids(abstract_words, vocab, article_oovs)
                 # abs_ids_extend_vocab包含oov的词
-                # _, target = get_dec_inp_targ_seqs(abs_ids_extend_vocab, max_dec_len, start_decoding, stop_decoding)
-                # 此时的dec_input包含了oov的词,更准确
-                dec_input, target = get_dec_inp_targ_seqs(abs_ids_extend_vocab, max_dec_len, start_decoding, stop_decoding)
+                _, target = get_dec_inp_targ_seqs(abs_ids_extend_vocab, max_dec_len, start_decoding, stop_decoding)
+
+                # 此时的dec_input包含了oov的词,更准确, 但使用下面的dec_input,代码跑不过,报如下错误：
+                # indices[1, 0] = 409 is not in [0, 400) [Op: ResourceGather] name: pgn / embedding_1 / embedding_lookup /
+                # dec_input, target = get_dec_inp_targ_seqs(abs_ids_extend_vocab, max_dec_len, start_decoding, stop_decoding)
+
 
             # mark长度
             dec_len = len(target)

@@ -2,3 +2,4 @@
 *.iml
 .venv/*
 __pycache__/*
+seq2seq_pgn_tf2_lj/dataSetPgn2/checkpoints/

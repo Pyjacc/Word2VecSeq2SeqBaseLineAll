@@ -3,3 +3,11 @@
 .venv/*
 __pycache__/*
 seq2seq_pgn_tf2_lj/dataSetPgn2/checkpoints/
+seq2seq_pgn_tf2_lj/__pycache__/
+seq2seq_tf2_lj/__pycache__/
+seq2seq_tf2_lj/attentions/__pycache__/
+seq2seq_tf2_lj/decoders/__pycache__/
+seq2seq_tf2_lj/encoders/__pycache__/
+seq2seq_tf2_lj/models/__pycache__/
+seq2seq_tf2_lj/utils/__pycache__/
+

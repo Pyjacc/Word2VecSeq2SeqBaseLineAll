@@ -1,0 +1,59 @@
+
+8、OOM when allocating tensor with shape[256,30000]
+在pycharm中用gpu训练模型时，报如下错误:
+_six.raise_from(_core._status_to_exception(e.code, message), None)
+  File "<string>", line 3, in raise_from
+tensorflow.python.framework.errors_impl.ResourceExhaustedError: OOM when allocating tensor with shape[256,30000] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:MatMul]
+
+
+解决方法：将batch_size调小一些
+
+
+9、Fail to find the dnn implementation. [Op:CudnnRNN]
+在pycharm中用gpu训练模型时，一直报如下错误：
+six.raise_from(core._status_to_exception(e.code, message), None)
+  File "<string>", line 2, in raise_from
+tensorflow.python.framework.errors_impl.UnknownError: Fail to find the dnn implementation. [Op:CudnnRNN]
+
+解决方法：
+(1)gpus = tf.config.experimental.list_physical_devices('GPU')
+print(gpus)
+for gpu in gpus:
+    tf.config.experimental.set_memory_growth(gpu, True)
+(2)代码中不要有如下打印语句：print(tf.test.is_gpu_available()) （具体原因不知道）
+
+
+10、ValueError: Tensor's shape (30000, 256) is not compatible with supplied shape (3000, 256)
+
+Exception ignored in: <bound method _CheckpointRestoreCoordinatorDeleter.__del__ of <tensorflow.python.training.tracking.util._CheckpointRestoreCoordinatorDeleter object at 0x7ff3b02764e0>>
+Traceback (most recent call last):
+  File "/home/qinglong/anaconda3/envs/nlpStage01/lib/python3.6/site-packages/tensorflow_core/python/training/tracking/util.py", line 140, in __del__
+TypeError: 'NoneType' object is not callable
+
+在train时报上述错误
+
+
+解决方法：main_activity.py中是定的参数parser.add_argument("--vocab_size"） vocab_size的大小要与构建embedding_matrix时的大小一致（train_word2vec_model.py中的
+vocab = Vocab(vocab_path, VOCAB_SIZE)中 VOCAB_SIZE的大小）
+
+11、在pycharm中检测不到gpu
+解决方法：
+（1）先检测是否安装了tensorflow-gpu，cuda，cudnn，若没有，先安装 cuda和cudnn
+（2）安装cudatoolkit ，source activate nlpStage01进入虚拟环境，conda install cudatoolkit==10.0.130
+（3）安装tensorflow-gpu：conda install tensorflow-gpu==2.0.0
+（4）在~/.bashrc中添加pycham和cuda的环境变量
+# add cuda path
+export CUDA_HOME=/usr/local/cuda-10.0
+export LD_LIBRARY_PATH=${CUDA_HOME}/lib64
+export PATH=${CUDA_HOME}/bin:${PATH}
+
+# add pycharm path
+export PATH="/opt/pycharm2019/bin:$PATH"
+
+（5）在pycharm中设置run---->edit configurations...---→Environment Variables:中添加dua路径：LD_LIBRARY_PATH=/usr/local/cuda-10.0/lib64（记得用;与前面的隔开）
+
+注：
+（1）若前面4步完成后可以在pycharm中检测到gpu，则不用第五步。检测gpu方法：
+print(tf.test.is_gpu_available())为True，则说明GPU正常
+（2）本人环境：tensorflow-gpu==2.0.0，cudatoolkit==10.0.130，cuda==10.0.130，
+cudnn==7.6.5.32，pillow==7.1.2

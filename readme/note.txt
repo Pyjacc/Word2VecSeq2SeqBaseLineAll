@@ -35,7 +35,7 @@ name: sequence_to_sequence/decoder/embedding_1/embedding_lookup/
 
 
 
-2、seq2seq_tf2_zn是基于张老师的代码
+2、seq2seq_tf2_z是基于张老师的代码
 此部分代码可以加OOV的词跑过，但是小部分数据train后再test时有结果，全量数据train后再test时，test的结果全部为UNK
 
 单步debug，发现在经过rnn_encoder.py的call函数中的output, forward_state, backward_state = self.bigru(x, initial_state=hidden)后，
@@ -43,20 +43,20 @@ output变为了UNK，也不知道怎么修改这个bug。
 
 
 
-3、seq2seq_pgn_tf2_zn是基于张老师的代码
+3、seq2seq_pgn_tf2_z是基于张老师的代码
 此部分代码train可以跑通
 用小部分数据train后进行test时，报如下错误：
   0%|          | 49/20000 [01:28<18:15:59,  3.30s/it]WARNING:tensorflow:Unresolved object in checkpoint: (root).step
 WARNING:tensorflow:A checkpoint was restored (e.g. tf.train.Checkpoint.restore or tf.keras.Model.load_weights) but not all checkpointed values were used. See above for specific issues. Use expect_partial() on the load status object, e.g. tf.train.Checkpoint.restore(...).expect_partial(), to silence these warnings, or use assert_consumed() to make the check explicit. See https://www.tensorflow.org/alpha/guide/checkpoints#loading_mechanics for details.
   0%|          | 49/20000 [01:28<10:03:48,  1.82s/it]
 Traceback (most recent call last):
-  File "/home/qinglong/Study/NLP/stage01/chapter5/Word2VecBaseLineAll/seq2seq_pgn_tf2_zn/main_pgn.py", line 130, in <module>
+  File "/home/qinglong/Study/NLP/stage01/chapter5/Word2VecSeq2SeqBaseLineAll/seq2seq_pgn_tf2_z/main_pgn.py", line 130, in <module>
     main()
-  File "/home/qinglong/Study/NLP/stage01/chapter5/Word2VecBaseLineAll/seq2seq_pgn_tf2_zn/main_pgn.py", line 125, in main
+  File "/home/qinglong/Study/NLP/stage01/chapter5/Word2VecSeq2SeqBaseLineAll/seq2seq_pgn_tf2_z/main_pgn.py", line 125, in main
     predict_result(params)
-  File "/home/qinglong/Study/NLP/stage01/chapter5/Word2VecBaseLineAll/seq2seq_pgn_tf2_zn/train_eval_test.py", line 81, in predict_result
+  File "/home/qinglong/Study/NLP/stage01/chapter5/Word2VecSeq2SeqBaseLineAll/seq2seq_pgn_tf2_z/train_eval_test.py", line 81, in predict_result
     results = test_and_save(params)
-  File "/home/qinglong/Study/NLP/stage01/chapter5/Word2VecBaseLineAll/seq2seq_pgn_tf2_zn/train_eval_test.py", line 73, in test_and_save
+  File "/home/qinglong/Study/NLP/stage01/chapter5/Word2VecSeq2SeqBaseLineAll/seq2seq_pgn_tf2_z/train_eval_test.py", line 73, in test_and_save
     trial = next(gen)
 StopIteration
 

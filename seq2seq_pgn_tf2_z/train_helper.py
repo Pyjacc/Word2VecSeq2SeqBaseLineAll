@@ -1,6 +1,6 @@
 import tensorflow as tf
 import time
-from seq2seq_pgn_tf2_zn.utils.losses import loss_function
+from seq2seq_pgn_tf2_z.utils.losses import loss_function
 
 
 def train_model(model, dataset, params, ckpt, ckpt_manager):

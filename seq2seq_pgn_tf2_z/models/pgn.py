@@ -1,7 +1,7 @@
 import tensorflow as tf
-from seq2seq_pgn_tf2_zn.encoders import rnn_encoder
-from seq2seq_pgn_tf2_zn.decoders import rnn_decoder
-from seq2seq_pgn_tf2_zn.utils import decoding
+from seq2seq_pgn_tf2_z.encoders import rnn_encoder
+from seq2seq_pgn_tf2_z.decoders import rnn_decoder
+from seq2seq_pgn_tf2_z.utils import decoding
 from utilsCommon.data_utils import load_word2vec
 
 

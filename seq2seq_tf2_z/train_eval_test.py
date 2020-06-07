@@ -1,10 +1,10 @@
 import tensorflow as tf
-from seq2seq_tf2_zn.models.sequence_to_sequence import SequenceToSequence
-from seq2seq_tf2_zn.batcher import batcher, Vocab
-from seq2seq_tf2_zn.train_helper import train_model
-from seq2seq_tf2_zn.test_helper import beam_decode, greedy_decode
+from seq2seq_tf2_z.models.sequence_to_sequence import SequenceToSequence
+from seq2seq_tf2_z.batcher import batcher, Vocab
+from seq2seq_tf2_z.train_helper import train_model
+from seq2seq_tf2_z.test_helper import beam_decode, greedy_decode
 from tqdm import tqdm
-from seq2seq_tf2_zn.utils.data_utils import get_result_filename
+from seq2seq_tf2_z.utils.data_utils import get_result_filename
 import pandas as pd
 # from rouge import Rouge
 import pprint

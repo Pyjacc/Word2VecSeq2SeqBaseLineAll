@@ -5,8 +5,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 sys.path.append(BASE_DIR)
 import tensorflow as tf
 import argparse
-from seq2seq_tf2_zn.train_eval_test import train, test, evaluate
-from seq2seq_tf2_zn.utils.data_utils import get_result_filename
+from seq2seq_tf2_z.train_eval_test import train, test, evaluate
+from seq2seq_tf2_z.utils.data_utils import get_result_filename
 # from utils.log_utils import define_logger
 import pathlib
 
@@ -16,7 +16,7 @@ import pathlib
 # root = pathlib.Path(os.path.abspath(__file__)).parent.parent
 
 def readTxtLinesNumber():
-    txt_path = '{}/seq2seq_tf2_zn/dataSets/vocab.txt'.format(BASE_DIR)
+    txt_path = '{}/seq2seq_tf2_z/dataSets/vocab.txt'.format(BASE_DIR)
     with open(txt_path, mode="r", encoding="utf-8") as f:
         lines = len(f.readlines())
     return lines
@@ -57,17 +57,17 @@ def main():
 
     # path
     # /ckpt/checkpoint/checkpoint
-    parser.add_argument("--seq2seq_model_dir", default='{}/seq2seq_tf2_zn/dataSets/ckpt/seq2seq'.format(BASE_DIR), help="Model folder")
-    parser.add_argument("--pgn_model_dir", default='{}/seq2seq_tf2_zn/dataSets/ckpt/pgn'.format(BASE_DIR), help="Model folder")
+    parser.add_argument("--seq2seq_model_dir", default='{}/seq2seq_tf2_z/dataSets/ckpt/seq2seq'.format(BASE_DIR), help="Model folder")
+    parser.add_argument("--pgn_model_dir", default='{}/seq2seq_tf2_z/dataSets/ckpt/pgn'.format(BASE_DIR), help="Model folder")
     parser.add_argument("--model_path", help="Path to a specific model", default="", type=str)
-    parser.add_argument("--train_seg_x_dir", default='{}/seq2seq_tf2_zn/dataSets/train_set_seg_x.txt'.format(BASE_DIR), help="train_seg_x_dir")
-    parser.add_argument("--train_seg_y_dir", default='{}/seq2seq_tf2_zn/dataSets/train_set_seg_y.txt'.format(BASE_DIR), help="train_seg_y_dir")
-    parser.add_argument("--test_seg_x_dir", default='{}/seq2seq_tf2_zn/dataSets/test_set_seg_x.txt'.format(BASE_DIR), help="test_seg_x_dir")
-    parser.add_argument("--vocab_path", default='{}/seq2seq_tf2_zn/dataSets/vocab.txt'.format(BASE_DIR), help="Vocab path")
-    parser.add_argument("--word2vec_output", default='{}/seq2seq_tf2_zn/dataSets/word2vec.txt'.format(BASE_DIR), help="Vocab path")
+    parser.add_argument("--train_seg_x_dir", default='{}/seq2seq_tf2_z/dataSets/train_set_seg_x.txt'.format(BASE_DIR), help="train_seg_x_dir")
+    parser.add_argument("--train_seg_y_dir", default='{}/seq2seq_tf2_z/dataSets/train_set_seg_y.txt'.format(BASE_DIR), help="train_seg_y_dir")
+    parser.add_argument("--test_seg_x_dir", default='{}/seq2seq_tf2_z/dataSets/test_set_seg_x.txt'.format(BASE_DIR), help="test_seg_x_dir")
+    parser.add_argument("--vocab_path", default='{}/seq2seq_tf2_z/dataSets/vocab.txt'.format(BASE_DIR), help="Vocab path")
+    parser.add_argument("--word2vec_output", default='{}/seq2seq_tf2_z/dataSets/word2vec.txt'.format(BASE_DIR), help="Vocab path")
     parser.add_argument("--log_file", help="File in which to redirect console outputs", default="", type=str)
-    parser.add_argument("--test_save_dir", default='{}/seq2seq_tf2_zn/dataSets/'.format(BASE_DIR), help="test_save_dir")
-    parser.add_argument("--test_x_dir", default='{}/seq2seq_tf2_zn/dataSets/AutoMaster_TestSet.csv'.format(BASE_DIR), help="test_x_dir")
+    parser.add_argument("--test_save_dir", default='{}/seq2seq_tf2_z/dataSets/'.format(BASE_DIR), help="test_save_dir")
+    parser.add_argument("--test_x_dir", default='{}/seq2seq_tf2_z/dataSets/AutoMaster_TestSet.csv'.format(BASE_DIR), help="test_x_dir")
 
     # others
     parser.add_argument("--steps_per_epoch", default=1300, help="max_train_steps", type=int)

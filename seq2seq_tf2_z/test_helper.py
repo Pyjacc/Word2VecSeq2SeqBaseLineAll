@@ -1,6 +1,6 @@
 import tensorflow as tf
 import numpy as np
-from seq2seq_tf2_zn.batcher import output_to_words
+from seq2seq_tf2_z.batcher import output_to_words
 from tqdm import tqdm
 import math
 

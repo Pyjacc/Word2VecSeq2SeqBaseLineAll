@@ -1,8 +1,8 @@
 import tensorflow as tf
-from seq2seq_pgn_tf2_zn.models.pgn import PGN
-from seq2seq_pgn_tf2_zn.batcher import batcher, Vocab
-from seq2seq_pgn_tf2_zn.train_helper import train_model
-from seq2seq_pgn_tf2_zn.test_helper import beam_decode
+from seq2seq_pgn_tf2_z.models.pgn import PGN
+from seq2seq_pgn_tf2_z.batcher import batcher, Vocab
+from seq2seq_pgn_tf2_z.train_helper import train_model
+from seq2seq_pgn_tf2_z.test_helper import beam_decode
 from tqdm import tqdm
 from utilsCommon.data_utils import get_result_filename
 import pandas as pd

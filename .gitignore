@@ -10,4 +10,5 @@ seq2seq_tf2_lj/decoders/__pycache__/
 seq2seq_tf2_lj/encoders/__pycache__/
 seq2seq_tf2_lj/models/__pycache__/
 seq2seq_tf2_lj/utils/__pycache__/
+seq2seq_pgn_tf2_z/dataSetPgn/ckpt/pgn/checkpoint/
 

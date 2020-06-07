@@ -1,85 +1,52 @@
-1. 第一步：clean data,执行clean_data.py
-2. 第二步：build vocab.txt，执行build_vocab_dict.py
-3. 第三步：构建embedding_matrix, 执行train_word2vec_model.py
-4. 第四步：修改run.py中params["mode"] == "train"，开始训练
-5. 第五步：修改run.py中params["mode"] == "test"，开始预测
-
-
-注：当本次train时改变模型的维度，如vocab_size改变,embed_size改变，都要删除原模型数据后（ckpt下的数据）
-再进行训练和测试
+1、代码说明
+（1）dataProcess为数据处理，从原始数据开始切词、分词、去除停用词、去除噪声词。最后得到词表、词向量矩阵。
+执行模块下的main_data_process.py，即可完成相应的功能
+（2）seq2seq_tf2_d、seq2seq_pgn_tf2_d、seq2seq_tf2_z、seq2seq_pgn_tf2_z四个模块是相互独立的。
+（3）在跑每个模块的代码时先将dataProcess下dataSetCommon中的训练数据、测试数据、vocab复制到模块下的dataset中（test_set_seg_x.txt、
+train_set_seg_x.txt、train_set_seg_y.txt、vocab.txtword2vec.txt，其中word2vec.txt的每行为“词：词向量”形式）
 
 
 
-遗留问题：
-（1）batcher_utils.py中如果不注释掉abs_ids_extend_vocab = abstract_to_ids(abstract_words, vocab, article_oovs)和
+2、问题说明
+（1）当本次train时改变模型的维度，如vocab_size改变,embed_size改变，都要删除原模型数据后（ckpt下的数据）后再进行训练和测试
+（2）batcher_utils.py中如果不注释掉abs_ids_extend_vocab = abstract_to_ids(abstract_words, vocab, article_oovs)和
 _, target = get_dec_inp_targ_seqs(abs_ids_extend_vocab, max_dec_len, start_decoding, stop_decoding)，就会报如下错误：
 tensorflow.python.framework.errors_impl.InvalidArgumentError:
 indices[0,0] = 30009 is not in [0, 30000) [Op:ResourceGather]
 name: sequence_to_sequence/decoder/embedding_1/embedding_lookup/
 
-（2）test的结果全部为unk
+问题原因：oov中的词是通过pgn引入的，不是通过decoder的input引入的。
+_, target = get_dec_inp_targ_seqs(abs_ids_extend_vocab, max_dec_len, start_decoding, stop_decoding)就是只改变标签的值，
+而不改变decoder input的值。
+
+（3）在训练中途打断训练，test的结果可能为空（注意不是nuk，时没有test结果）
 
 
 
 
+3、遗留问题：
+（1）对于seq2seq_tf2_d，跑全量数据时，test结果为unk， 问题还没有解决。
 
-1、seq2seq_tf2_lj是基于助教老师的代码
-（1）若不加OOV的词，代码可以跑通，但若加了OOV的词，代码跑不通，即不注释掉batcher_utils.py中的
-abs_ids_extend_vocab = abstract_to_ids(abstract_words, vocab, article_oovs)和
-_, target = get_dec_inp_targ_seqs(abs_ids_extend_vocab, max_dec_len, start_decoding, stop_decoding)，就会报如下错误：
-tensorflow.python.framework.errors_impl.InvalidArgumentError:
-indices[0,0] = 30009 is not in [0, 30000) [Op:ResourceGather]
-name: sequence_to_sequence/decoder/embedding_1/embedding_lookup/
-
-问题的原因没有找到，应该怎么修改这个bug。
-
-
-
-2、seq2seq_tf2_z是基于张老师的代码
-此部分代码可以加OOV的词跑过，但是小部分数据train后再test时有结果，全量数据train后再test时，test的结果全部为UNK
-
+（2）seq2seq_tf2_z是基于张老师的代码，此部分代码可以加OOV的词跑过，但是小部分数据train后再test时有结果，全量数据train后再test时，test的结果全部为UNK
 单步debug，发现在经过rnn_encoder.py的call函数中的output, forward_state, backward_state = self.bigru(x, initial_state=hidden)后，
-output变为了UNK，也不知道怎么修改这个bug。
+output变为了UNK，这个bug还没有修改。
 
-
-
-3、seq2seq_pgn_tf2_z是基于张老师的代码
-此部分代码train可以跑通
-用小部分数据train后进行test时，报如下错误：
+（3）seq2seq_pgn_tf2_z是基于张老师的代码，此部分代码train可以跑通，但用小部分数据train后进行test时，报如下错误：
   0%|          | 49/20000 [01:28<18:15:59,  3.30s/it]WARNING:tensorflow:Unresolved object in checkpoint: (root).step
 WARNING:tensorflow:A checkpoint was restored (e.g. tf.train.Checkpoint.restore or tf.keras.Model.load_weights) but not all checkpointed values were used. See above for specific issues. Use expect_partial() on the load status object, e.g. tf.train.Checkpoint.restore(...).expect_partial(), to silence these warnings, or use assert_consumed() to make the check explicit. See https://www.tensorflow.org/alpha/guide/checkpoints#loading_mechanics for details.
   0%|          | 49/20000 [01:28<10:03:48,  1.82s/it]
 Traceback (most recent call last):
-  File "/home/qinglong/Study/NLP/stage01/chapter5/Word2VecSeq2SeqBaseLineAll/seq2seq_pgn_tf2_z/main_pgn.py", line 130, in <module>
+  File "/home/qinglong/Study/NLP/stage01/chapter5/Word2VecBaseLineAll/seq2seq_pgn_tf2_zn/main_pgn.py", line 130, in <module>
     main()
-  File "/home/qinglong/Study/NLP/stage01/chapter5/Word2VecSeq2SeqBaseLineAll/seq2seq_pgn_tf2_z/main_pgn.py", line 125, in main
+  File "/home/qinglong/Study/NLP/stage01/chapter5/Word2VecBaseLineAll/seq2seq_pgn_tf2_zn/main_pgn.py", line 125, in main
     predict_result(params)
-  File "/home/qinglong/Study/NLP/stage01/chapter5/Word2VecSeq2SeqBaseLineAll/seq2seq_pgn_tf2_z/train_eval_test.py", line 81, in predict_result
+  File "/home/qinglong/Study/NLP/stage01/chapter5/Word2VecBaseLineAll/seq2seq_pgn_tf2_zn/train_eval_test.py", line 81, in predict_result
     results = test_and_save(params)
-  File "/home/qinglong/Study/NLP/stage01/chapter5/Word2VecSeq2SeqBaseLineAll/seq2seq_pgn_tf2_z/train_eval_test.py", line 73, in test_and_save
+  File "/home/qinglong/Study/NLP/stage01/chapter5/Word2VecBaseLineAll/seq2seq_pgn_tf2_zn/train_eval_test.py", line 73, in test_and_save
     trial = next(gen)
 StopIteration
 
-不知道怎么修改这个debug
-
-
-4、seq2seq_pgn_tf2_lj是基于助教老师的代码
-（1）train时将main中的pointer_gen值设置为True跑不通，报如下错误：
-tensorflow.python.framework.errors_impl.InvalidArgumentError: indices[7,0] = 401 is not in [0, 400) [Op:ResourceGather] name: pgn/embedding_1/embedding_lookup/
-原因还是
-batcher.py中的dec_input, target = get_dec_inp_targ_seqs(abs_ids_extend_vocab, max_dec_len, start_decoding, stop_decoding)
-
-但是不知道怎么修改这个bug
-
-（2）train时将main中的pointer_gen值设置为False可以跑通，但是会报如下警告：
-WARNING:tensorflow:Gradients do not exist for variables ['pgn/dense_5/kernel:0', 'pgn/dense_5/bias:0', 'pgn/dense_6/kernel:0', 'pgn/dense_6/bias:0', 'pgn/dense_7/kernel:0', 'pgn/dense_7/bias:0'] when minimizing the loss.
-2020-05-31 16:49:22,507 : WARNING : Gradients do not exist for variables ['pgn/dense_5/kernel:0', 'pgn/dense_5/bias:0', 'pgn/dense_6/kernel:0', 'pgn/dense_6/bias:0', 'pgn/dense_7/kernel:0', 'pgn/dense_7/bias:0'] when minimizing the loss.
-
-网上搜索也每找到答案。
-
-
-
-
+这个bug还没有修改。
 
 
 

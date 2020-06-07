@@ -39,11 +39,12 @@ def load_word2vec(params):
     :param vocab_size:
     :return:
     """
-    #次部分代码需要简化,因为保存模型中已经是“词:词向量的形式”,因此没必要再重新组装embedding_matrix
+
     word2vec_dict = load_pkl(params['word2vec_output'])
     vocab_dict = open(params['vocab_path'], encoding='utf-8').readlines()
     embedding_matrix = np.zeros((params['vocab_size'], params['embed_size']))
 
+    # 次部分代码需要简化,因为保存模型中已经是“词:词向量的形式”,因此没必要再重新组装embedding_matrix
     for line in vocab_dict[:params['vocab_size']]:
         word_id = line.split()
         word, i = word_id

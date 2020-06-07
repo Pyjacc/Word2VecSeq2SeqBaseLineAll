@@ -62,7 +62,7 @@ def test(params):
     print("Model restored")
     for batch in b:
         yield beam_decode(model, batch, vocab, params)
-        
+
 
 def test_and_save(params):
     assert params["test_save_dir"], "provide a dir where to save the results"

@@ -90,7 +90,7 @@ def main():
     parser.add_argument('--dropout_rate', default=0.1, type=float)
     
     # mode
-    parser.add_argument("--mode", default='test', help="training, eval or test options")
+    parser.add_argument("--mode", default='train', help="training, eval or test options")
     parser.add_argument("--model", default='PGN', help="which model to be slected")
     parser.add_argument("--pointer_gen", default=True, help="training, eval or test options")
     parser.add_argument("--is_coverage", default=True, help="is_coverage")

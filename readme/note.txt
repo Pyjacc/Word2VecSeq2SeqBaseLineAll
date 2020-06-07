@@ -9,6 +9,7 @@ train_set_seg_x.txt、train_set_seg_y.txt、vocab.txtword2vec.txt，其中word2v
 
 2、问题说明
 （1）当本次train时改变模型的维度，如vocab_size改变,embed_size改变，都要删除原模型数据后（ckpt下的数据）后再进行训练和测试
+
 （2）batcher_utils.py中如果不注释掉abs_ids_extend_vocab = abstract_to_ids(abstract_words, vocab, article_oovs)和
 _, target = get_dec_inp_targ_seqs(abs_ids_extend_vocab, max_dec_len, start_decoding, stop_decoding)，就会报如下错误：
 tensorflow.python.framework.errors_impl.InvalidArgumentError:
@@ -20,6 +21,12 @@ _, target = get_dec_inp_targ_seqs(abs_ids_extend_vocab, max_dec_len, start_decod
 而不改变decoder input的值。
 
 （3）在训练中途打断训练，test的结果可能为空（注意不是nuk，时没有test结果）
+
+（4）训练过程中，训练一段时间后肯能出现losses为na，如下：
+Epoch 1 Batch 300 Loss na
+
+解决：通过修改losses函数来纠正此问题，如将losses = -tf.math.log(gold_probs)改为
+losses = -tf.math.log(tf.clip_by_value(gold_probs, 1e-8, 1.0))
 
 
 
